@@ -25,7 +25,7 @@ class SearchPage extends React.Component {
     changeBookShelf(id, e) {
         let bookId = id
         let targetVal = e.target.value
-        BooksAPI.update(id, targetVal)
+        BooksAPI.update(bookId, targetVal)
       }
 
     render() {
