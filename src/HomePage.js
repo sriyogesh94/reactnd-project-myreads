@@ -1,10 +1,21 @@
 import React from 'react'
-import './App.css'
+import Header from './Header'
+import BookGrid from './BooksGrid'
+import SearchButton from './SearchButton'
 
-const BookShelf = (props) => (
-    <div className="bookshelf">
-       <h2 className="bookshelf-title">Currently Reading</h2>
-       <h2 className="bookshelf-title">Want to Read</h2>
-       <h2 className="bookshelf-title">Read</h2>
-    </div>
-)
+const HomePage = (props) => {
+    return(
+        <div className="list-books">
+            <Header />
+            <div className="list-books-content">
+                <BookGrid books={props.books} changeBookShelf={props.changeBookShelf} gridType={"current"} />
+                <BookGrid books={props.books} changeBookShelf={props.changeBookShelf} gridType={"wantToRead"} />
+                <BookGrid books={props.books} changeBookShelf={props.changeBookShelf} gridType={"read"} />
+            </div>
+            <SearchButton/>
+        </div>
+    )
+}
+
+export default HomePage
+

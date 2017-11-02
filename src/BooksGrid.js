@@ -15,6 +15,7 @@ const BookGrid = (props) => {
                     <Book key={book.id} book={book} eventHandler={props.changeBookShelf.bind(this, book.id)}/>)))}
                 {props.gridType === "wantToRead" && props.books.map((book) => (book.shelf === "wantToRead" && (
                     <Book key={book.id} book={book} eventHandler={props.changeBookShelf.bind(this, book.id)}/>)))}
+
               </ol>
             </div>
         </div>
