@@ -1,29 +1,54 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import * as BooksAPI from './BooksAPI'
+import Book from './Book'
 
-const SearchPage = () => {
-    return(
-        <div className="search-books">
-        <div className="search-books-bar">
-          <Link className="close-search" to='/'>Close</Link>
-          <div className="search-books-input-wrapper">
-            {/*
-              NOTES: The search from BooksAPI is limited to a particular set of search terms.
-              You can find these search terms here:
-              https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
+class SearchPage extends React.Component {
+    state = {
+        books : [] 
+    }
 
-              However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-              you don't find a specific author or title. Every search is limited by search terms.
-            */}
-            <input type="text" placeholder="Search by title or author"/>
+    searchHandler(e) {
+        let query = e.target.value;
+        if(query) {
+            // BooksAPI.search(query, 20).then((res) => console.log(res))
+            BooksAPI.search(query, 8).then((res) => (
+                this.setState({
+                    books: [].concat(res)
+                })
+            ))
 
+        }
+
+    }
+
+    changeBookShelf(id, e) {
+        let bookId = id
+        let targetVal = e.target.value
+        BooksAPI.update(id, targetVal)
+      }
+
+    render() {
+        return(
+            <div className="search-books">
+            <div className="search-books-bar">
+              <Link className="close-search" to='/'>Close</Link>
+              <div className="search-books-input-wrapper">
+                <input type="text" placeholder="Search by title or author" onChange={this.searchHandler.bind(this)}/>
+    
+              </div>
+            </div>
+            <div className="search-books-results">
+              <ol className="books-grid">
+                {this.state.books.map((book, index) => (
+                    <Book key={book.id + index} book={book} eventHandler={this.changeBookShelf.bind(this, book.id)}/>
+                ))}             
+              </ol>
+            </div>
           </div>
-        </div>
-        <div className="search-books-results">
-          <ol className="books-grid"></ol>
-        </div>
-      </div>
-    )
+        )
+    }
+    
 }
 
 export default SearchPage;
