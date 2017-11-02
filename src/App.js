@@ -1,6 +1,8 @@
 import React from 'react'
+import Header from './Header'
 import SearchPage from './Search'
-import Book from './Book'
+import BookGrid from './BooksGrid'
+import SearchButton from './SearchButton'
 import * as BooksAPI from './BooksAPI'
 import './App.css'
 
@@ -14,8 +16,7 @@ class BooksApp extends React.Component {
      * users can use the browser's back and forward buttons to navigate between
      * pages, as well as provide a good URL they can bookmark and share.
      */
-    books : [],
-    showSearchPage: false
+    books : []
   }
 
   componentDidMount () {
@@ -37,52 +38,15 @@ class BooksApp extends React.Component {
   render() {
     return (
       <div className="app">
-        {this.state.showSearchPage ? (
-          <SearchPage />
-        ) : (
           <div className="list-books">
-            <div className="list-books-title">
-              <h1>MyReads</h1>
-            </div>
+            <Header />
             <div className="list-books-content">
-              <div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Currently Reading</h2>
-                  <div className="bookshelf-books">
-                    <ol className="books-grid">
-                     {this.state.books.map((book) => (book.shelf === "currentlyReading" && (
-                      <Book key={book.id} book={book} eventHandler={this.changeBookShelf.bind(this, book.id)}/>
-                  )))}
-                    </ol>
-                  </div>
-                </div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Want to Read</h2>
-                  <div className="bookshelf-books">
-                    <ol className="books-grid">
-                    {this.state.books.map((book) => (book.shelf === "wantToRead" && (
-                      <Book key={book.id} book={book} eventHandler={this.changeBookShelf.bind(this, book.id)}/>
-                  )))}
-                    </ol>
-                  </div>
-                </div>
-                <div className="bookshelf">
-                  <h2 className="bookshelf-title">Read</h2>
-                  <div className="bookshelf-books">
-                    <ol className="books-grid">
-                    {this.state.books.map((book) => (book.shelf === "read" && (
-                      <Book key={book.id} book={book} eventHandler={this.changeBookShelf.bind(this, book.id)}/>
-                  )))}
-                    </ol>
-                  </div>
-                </div>
-              </div>
+                <BookGrid books={this.state.books} changeBookShelf={this.changeBookShelf.bind(this)} gridType={"current"} />
+                <BookGrid books={this.state.books} changeBookShelf={this.changeBookShelf.bind(this)} gridType={"wantToRead"} />
+                <BookGrid books={this.state.books} changeBookShelf={this.changeBookShelf.bind(this)} gridType={"read"} />
             </div>
-            <div className="open-search">
-              <a onClick={() => this.setState({ showSearchPage: true })}>Add a book</a>
-            </div>
+            <SearchButton/>
           </div>
-        )}
       </div>
     )
   }
